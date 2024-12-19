@@ -14,23 +14,29 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Check if the chunk is from node_modules (this could be libraries like lodash, react, etc.)
+          // Group third-party libraries into a 'vendor' chunk
           if (id.includes("node_modules")) {
-            // You can group libraries into a 'vendor' chunk
             return "vendor";
           }
 
-          // You can also split large components or libraries into separate chunks manually
+          // Split large components into their own chunk
           if (id.includes("src/components")) {
             return "components";
           }
 
-          // Optionally, you can create other chunks for specific libraries
+          // Split utility functions into a separate chunk
           if (id.includes("src/utils")) {
             return "utils";
           }
 
-          // Return undefined to let Vite decide on the default chunking
+          // Example of grouping specific libraries into their own chunks
+          if (id.includes("node_modules/react-router-dom")) {
+            return "react-router-dom";
+          }
+
+          if (id.includes("node_modules/lodash")) {
+            return "lodash";
+          }
         },
       },
     },
